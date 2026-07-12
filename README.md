@@ -1,5 +1,9 @@
 # actovue
 
+[![ci](https://github.com/saivedant169/actovue/actions/workflows/ci.yml/badge.svg)](https://github.com/saivedant169/actovue/actions/workflows/ci.yml)
+[![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](pyproject.toml)
+
 Per-token hallucination-probe scores from vLLM, computed on decode-phase hidden
 states and streamed back through the OpenAI-compatible API.
 
