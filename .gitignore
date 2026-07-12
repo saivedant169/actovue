@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Environments
+.venv/
+venv/
+.env
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Model + data artifacts (never commit weights or activation dumps)
+*.safetensors
+*.bin
+*.pt
+hf_cache/
+activations/
+runs/
+
+# OS
+.DS_Store

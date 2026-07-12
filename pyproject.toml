@@ -1,0 +1,58 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "actovue"
+version = "0.1.0"
+description = "Per-token hallucination-probe scores from vLLM, computed on decode-phase hidden states inside CUDA graphs and streamed through the OpenAI-compatible API."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Saivedant Hava" }]
+keywords = ["vllm", "hallucination", "probes", "interpretability", "inference", "observability"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.4",
+    "huggingface_hub>=0.24",
+    "safetensors>=0.4",
+]
+
+[project.optional-dependencies]
+# vLLM only installs where CUDA wheels exist. Core probe math and the custom op
+# run on plain torch, so local development and CPU tests do not need this extra.
+serve = ["vllm>=0.16"]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[project.urls]
+Homepage = "https://github.com/saivedant169/actovue"
+Repository = "https://github.com/saivedant169/actovue"
+
+# vLLM discovers plugins through this entry-point group and calls register() at
+# engine start, before the model is compiled and the CUDA graphs are captured.
+[project.entry-points."vllm.general_plugins"]
+actovue = "actovue:register"
+
+[tool.hatch.build.targets.wheel]
+packages = ["actovue"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
+
+[tool.pytest.ini_options]
+markers = [
+    "gpu: needs a CUDA device and a captured graph; skipped on CPU-only machines",
+]
+testpaths = ["tests"]
