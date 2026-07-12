@@ -89,6 +89,43 @@ model, and a hash of the training data. The v1 anchor reuses the Apache-2.0
 probes from the hallucination-probes work by Obeso and colleagues (Nanda group);
 new probes for Qwen3-14B and gpt-oss-20b are trained here.
 
+## What runs where
+
+The probe math, the custom op, the request and response logic, and the benchmark
+metrics all run on plain torch, so they are developed and tested on a laptop with
+no GPU. Everything that needs a CUDA device is isolated behind the gpu test marker
+and lazy vLLM imports: CUDA-graph capture parity, the overhead measurement, probe
+training, and serving. That split is deliberate, so the whole library is
+exercised before any GPU time is spent.
+
+## Development
+
+    uv venv --python 3.12 .venv
+    source .venv/bin/activate
+    uv pip install torch numpy safetensors huggingface_hub pytest ruff
+
+    pytest -m "not gpu"      # the full CPU suite
+    ruff check . && ruff format --check .
+
+On a CUDA host, drop the marker filter to run the graph-capture tests too:
+
+    pytest
+
+## Repository layout
+
+    actovue/
+      __init__.py     plugin entry point (register) and public surface
+      probe.py        probe config, weights, and the reference score (the oracle)
+      ops.py          the actovue::probe custom op and the score buffer
+      patch.py        target-layer choice and the forward wrap
+      worker_ext.py   vLLM worker mixin: load, install, drain
+      api.py          request parsing, span grouping, response shaping
+      metrics.py      auroc, ece, brier, recall at a fixed fpr
+    tests/            CPU tests plus the gpu-marked capture parity test
+    bench/            run_overhead, train_probe, eval_matrix
+    examples/demo.py  generate with a probe and print scores
+    scripts/          pod_setup.sh, repro.sh
+
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).
