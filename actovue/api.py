@@ -119,7 +119,9 @@ def build_response(
     payload. Span max_score is left unrounded so a rounded display never hides a
     token that actually crossed the threshold.
     """
-    reported = [round(float(s), round_ndigits) if round_ndigits is not None else float(s) for s in scores]
+    reported = [
+        round(float(s), round_ndigits) if round_ndigits is not None else float(s) for s in scores
+    ]
     spans = group_spans(scores, tokens, threshold)
     return {
         "probe_id": probe_id,

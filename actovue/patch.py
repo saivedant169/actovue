@@ -68,7 +68,9 @@ def install_probe(
     return uninstall
 
 
-def _write(hidden: torch.Tensor, weight: torch.Tensor, bias: torch.Tensor, buffer: torch.Tensor) -> None:
+def _write(
+    hidden: torch.Tensor, weight: torch.Tensor, bias: torch.Tensor, buffer: torch.Tensor
+) -> None:
     if not isinstance(hidden, torch.Tensor):
         raise TypeError(f"expected the layer to output a tensor, got {type(hidden).__name__}")
     if hidden.dim() != 2:

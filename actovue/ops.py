@@ -35,7 +35,9 @@ def probe(
     them out using the request layout after the step.
     """
     n = hidden.shape[0]
-    scores = torch.sigmoid(hidden.to(torch.float32) @ weight.to(torch.float32) + bias.to(torch.float32))
+    scores = torch.sigmoid(
+        hidden.to(torch.float32) @ weight.to(torch.float32) + bias.to(torch.float32)
+    )
     out_buf[:n] = scores
 
 
@@ -62,8 +64,12 @@ def make_buffer(buffer_len: int, device: torch.device | str = "cpu") -> torch.Te
     return torch.zeros(buffer_len, dtype=torch.float32, device=device)
 
 
-def write_scores(hidden: torch.Tensor, weight: torch.Tensor, bias: torch.Tensor, out_buf: torch.Tensor) -> None:
+def write_scores(
+    hidden: torch.Tensor, weight: torch.Tensor, bias: torch.Tensor, out_buf: torch.Tensor
+) -> None:
     """Invoke the op. Thin wrapper so callers do not touch torch.ops directly."""
     if hidden.shape[0] > out_buf.shape[0]:
-        raise ValueError(f"buffer of length {out_buf.shape[0]} too small for {hidden.shape[0]} tokens")
+        raise ValueError(
+            f"buffer of length {out_buf.shape[0]} too small for {hidden.shape[0]} tokens"
+        )
     torch.ops.actovue.probe(hidden, weight, bias, out_buf)

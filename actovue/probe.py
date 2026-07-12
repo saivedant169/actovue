@@ -92,10 +92,13 @@ class Probe:
         dtype so this stays the single source of truth.
         """
         if hidden.dim() != 2:
-            raise ValueError(f"hidden must be 2D [num_tokens, hidden_size], got shape {tuple(hidden.shape)}")
+            raise ValueError(
+                f"hidden must be 2D [num_tokens, hidden_size], got shape {tuple(hidden.shape)}"
+            )
         if hidden.shape[1] != self.config.hidden_size:
             raise ValueError(
-                f"hidden dim {hidden.shape[1]} does not match probe hidden_size {self.config.hidden_size}"
+                f"hidden dim {hidden.shape[1]} does not match "
+                f"probe hidden_size {self.config.hidden_size}"
             )
         w = self.weight.to(device=hidden.device, dtype=torch.float32)
         b = self.bias.to(device=hidden.device, dtype=torch.float32)
