@@ -28,7 +28,7 @@ jobs:
           ruff check .
           ruff format --check .
       - name: Test (CPU only)
-        run: pytest -m "not gpu" -q
+        run: pytest -m "not gpu and not network" -q
 
   build:
     runs-on: ubuntu-latest

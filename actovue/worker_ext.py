@@ -72,13 +72,13 @@ class ProbeWorkerExtension:
     """
 
     def actovue_load(self) -> dict:
-        from actovue.probe import Probe
+        from actovue.probe import load_probe
 
         source = probe_source_from_env()
         if source is None:
             raise RuntimeError(f"{ENV_PROBE} is not set; nothing to serve")
         device = getattr(self, "device", "cuda")
-        probe = Probe.from_pretrained(source)
+        probe = load_probe(source)
         self._actovue_probe = probe
         self._actovue_weight = probe.weight.to(device)
         self._actovue_bias = probe.bias.to(device)

@@ -15,7 +15,7 @@ from actovue.api import (
     group_spans,
     parse_params,
 )
-from actovue.probe import Probe, ProbeConfig
+from actovue.probe import Probe, ProbeConfig, load_probe
 
 __version__ = "0.1.0"
 
@@ -26,6 +26,7 @@ __all__ = [
     "ProbeConfig",
     "build_response",
     "group_spans",
+    "load_probe",
     "parse_params",
     "register",
 ]

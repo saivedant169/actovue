@@ -47,8 +47,12 @@ To serve behind vLLM (needs a CUDA build of vLLM):
 Point the plugin at a probe and start vLLM as usual. vLLM discovers actovue
 through its plugin entry point and loads it before the model is compiled.
 
-    export ACTOVUE_PROBE=actovue/qwen2.5-7b-halu-probe-v1
-    vllm serve Qwen/Qwen2.5-7B-Instruct
+    # Anchor probe from the obalcells/hallucination-probes repo (repo::name form):
+    export ACTOVUE_PROBE="obalcells/hallucination-probes::qwen2_5_7b_linear"
+    # Or a probe published in the actovue layout:
+    #   export ACTOVUE_PROBE=actovue/qwen3-14b-halu-probe-v1
+    vllm serve Qwen/Qwen2.5-7B-Instruct \
+        --worker-extension-cls actovue.worker_ext.ProbeWorkerExtension
 
 Ask for scores per request through `extra_args`:
 

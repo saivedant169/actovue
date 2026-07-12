@@ -55,5 +55,6 @@ select = ["E", "F", "I", "W", "UP", "B"]
 [tool.pytest.ini_options]
 markers = [
     "gpu: needs a CUDA device and a captured graph; skipped on CPU-only machines",
+    "network: downloads from the Hugging Face hub; skipped in CI and offline",
 ]
 testpaths = ["tests"]
